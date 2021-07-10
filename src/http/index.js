@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import apis from './apis.js';
+// import qs from 'qs';
 
 // 基准 URL
 const baseURL = 'http://127.0.0.1:3000';
@@ -7,9 +7,10 @@ const baseURL = 'http://127.0.0.1:3000';
 const instance = axios.create({
   baseURL,
   timeout: 120 * 1000,
-  responseType: 'json',
+  // responseType: 'json',
   headers: {
     'Content-Type': 'application/json'
+    // 'Content-Type': 'application/x-www-form-urlencoded'
   }
 });
 
@@ -23,8 +24,9 @@ instance.interceptors.request.use(config => {
   // 业务代码的 headers 优先级高于公共配置的 headers
   config.headers = Object.assign(headers, config.headers);
   let menuCode = window.localStorage.getItem('menuCode') || 'menuCode';
-  // 这里还有问题
+  // FormData qs 这里还有问题
   if (config.method.toLowerCase === 'post') {
+    // config.data = qs.stringify(config.data);
     // FormData 不能直接追加参数
     if (config.data instanceof FormData) {
       // 业务代码的 menuCode 优先级高于公共配置的 menuCode
@@ -96,7 +98,6 @@ instance.interceptors.response.use(
 instance.install = Vue => {
   Object.defineProperty(Vue.prototype, '$request', {
     get: () => {
-      // return apis;
       return instance;
     }
   });

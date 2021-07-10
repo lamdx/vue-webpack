@@ -1,5 +1,7 @@
 <template>
-  <div class="account"></div>
+  <div class="account">
+    <button @click="req">req</button>
+  </div>
 </template>
 <script>
 export default {
@@ -14,7 +16,7 @@ export default {
       this.$request({
         url: '/order/v1/orderlist',
         method: 'post',
-        data: { dd: 55 }
+        data: new FormData()
       }).then(() => {});
     }
   }
@@ -22,5 +24,6 @@ export default {
 </script>
 <style lang="less">
 .account {
+  background: #fff;
 }
 </style>
