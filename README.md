@@ -129,4 +129,13 @@ export default {
 }
 ```
 
-##
+## 字体的引用
+
+```css
+@font-face {
+  font-family: "Wow";
+  src: url("Wow.otf");
+}
+```
+
+然后在 main.js 中引入这个 css 文件
