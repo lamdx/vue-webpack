@@ -9,7 +9,6 @@ let requireAll = requireContext => {
     banksMap[bankName] = `${bankName}.png`;
   });
   Vue.prototype.$banksMap = banksMap;
-  console.log(banksMap);
   // return requireContext.keys().map(requireContext);
 };
 requireAll(req);
