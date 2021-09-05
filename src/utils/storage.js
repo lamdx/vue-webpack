@@ -1,34 +1,35 @@
 function _getStorageType(type) {
   switch (type) {
-    case "local":
+    case 'local':
       return localStorage;
-    case "session":
+    case 'session':
       return sessionStorage;
     default:
       return sessionStorage;
   }
 }
 
-function _getItem(key, type = "session") {
-  if (!key || typeof key !== "string") {
+function _getItem(key, type = 'session') {
+  if (!key || typeof key !== 'string') {
     console.error(`参数${key}错误`);
     return;
   }
   let data = _getStorageType(type).getItem(key);
   try {
-    if (data !== "" && data !== undefined) {
+    if (data !== '' && data !== undefined) {
       return JSON.parse(data);
     } else {
-      return "";
+      return '';
     }
-  } catch {
+  } catch (err) {
+    console.log(err);
     console.error(`转换JSON失败，key：${key}`);
   }
 }
 
-function _setItem(key, value, type = "session") {
+function _setItem(key, value, type = 'session') {
   // key 必须为字符串
-  if (!key || typeof key !== "string") {
+  if (!key || typeof key !== 'string') {
     console.error(`参数${key}错误`);
     return;
   }
@@ -36,7 +37,7 @@ function _setItem(key, value, type = "session") {
   // 统一将数据转换为 json 格式进行存储
   if (value === undefined) {
     data = JSON.stringify();
-  } else if (typeof value === "object") {
+  } else if (typeof value === 'object') {
     data = JSON.stringify(value);
   } else {
     data = value;
@@ -44,25 +45,25 @@ function _setItem(key, value, type = "session") {
   _getStorageType(type).setItem(key, data);
 }
 
-// 获取原始数据
-function getRawItem(key, type = "session") {
+// // 获取原始数据
+function getRawItem(key, type = 'session') {
   if (!key) return;
   let raw = _getStorageType(type).getItem(key);
-  return raw || "";
+  return raw || '';
 }
 
-// 获取数据
-function getItem(key, type = "session") {
+// // 获取数据
+function getItem(key, type = 'session') {
   return _getItem(key, type);
 }
 
-// 保存数据
-function setItem(key, type = "session") {
+// // 保存数据
+function setItem(key, type = 'session') {
   _setItem(key, type);
 }
 
 // 删除数据
-function removeItem(key, type = "session") {
+function removeItem(key, type = 'session') {
   _getStorageType(type).removeItem(key);
 }
 
