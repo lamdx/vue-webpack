@@ -20,7 +20,15 @@
       @on-row-click="emitRowClick"
       @on-expand="emitExpand"
       @on-drag-drop="emitDragDrop"
-    ></Table>
+    >
+      <template
+        v-for="item in tableColumns"
+        :slot="item.slot"
+        slot-scope="{ row, column }"
+      >
+        <slot :name="item.slot" :data="row"></slot>
+      </template>
+    </Table>
     <div v-show="total > 0">
       <div>
         共{{ total }}条记录 第{{ total > 0 ? searchParams : 0 }} /{{
