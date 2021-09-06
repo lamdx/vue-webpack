@@ -15,38 +15,40 @@
         @mouseenter="isHover = true"
         @mouseleave="isHover = false"
       >
-        <!-- 选择的标签 -->
-        <div
-          v-if="maxTagCount === undefined || index < maxTagCount"
-          v-for="(item, index) in selectedMultiple"
-          :key="index"
-          :style="tagMaxWidth"
-          class="ivu-tag ivu-tag-checked"
-        >
-          <span class="ivu-tag-text">{{ item.label }} </span>
-          <Icon
-            v-if="showRemoveTag"
-            type="ios-close"
-            @click.native.stop="removeTag(item)"
-          ></Icon>
-        </div>
-        <!-- 最大标签显示样式 -->
-        <div
-          v-if="
-            maxTagCount !== undefined && selectedMultiple.length > maxTagCount
-          "
-          class="ivu-tag ivu-tag-checked"
-          @click.stop="showOptions"
-        >
-          <span ref="MaxTagCount" class="ivu-tag-text ivu-select-max-tag">
-            <template v-if="maxTagPlaceholder">
-              {{ maxTagPlaceholder(selectedMultiple.length - maxTagCount) }}
-            </template>
-            <template v-else>
-              + {{ selectedMultiple.length - maxTagCount }}
-            </template>
-          </span>
-        </div>
+        <!-- 选择的标签，只有多选模式才显示 tag -->
+        <template v-if="multiple">
+          <div
+            v-if="maxTagCount === undefined || index < maxTagCount"
+            v-for="(item, index) in selectedMultiple"
+            :key="index"
+            :style="tagMaxWidth"
+            class="ivu-tag ivu-tag-checked"
+          >
+            <span class="ivu-tag-text">{{ item.label }} </span>
+            <Icon
+              v-if="showRemoveTag"
+              type="ios-close"
+              @click.native.stop="removeTag(item)"
+            ></Icon>
+          </div>
+          <!-- 最大标签显示样式 -->
+          <div
+            v-if="
+              maxTagCount !== undefined && selectedMultiple.length > maxTagCount
+            "
+            class="ivu-tag ivu-tag-checked"
+            @click.stop="showOptions"
+          >
+            <span ref="MaxTagCount" class="ivu-tag-text ivu-select-max-tag">
+              <template v-if="maxTagPlaceholder">
+                {{ maxTagPlaceholder(selectedMultiple.length - maxTagCount) }}
+              </template>
+              <template v-else>
+                + {{ selectedMultiple.length - maxTagCount }}
+              </template>
+            </span>
+          </div>
+        </template>
         <!-- 输入框 -->
         <Input
           ref="input"
@@ -70,7 +72,7 @@
           v-if="showCloseIcon && !disabled"
           type="ios-close-circle"
           class="ivu-select-arrow"
-          @click.native.self="onClear"
+          @click.stop.self="onClear"
         ></Icon>
         <!-- 下拉 -->
         <Icon
@@ -258,6 +260,12 @@ export default {
         name: 'zhName',
         value: 'id'
       })
+    },
+    formatter: {
+      type: Function,
+      default: function(treeData) {
+        return treeData;
+      }
     }
   },
   data() {
@@ -320,13 +328,14 @@ export default {
     },
     showPlaceholder() {
       let status = false;
-      if (!this.options.length > 0) {
+      if (!this.options.length > 0 || !this.multiple) {
         status = true;
       }
       return status;
     },
     inputStyle() {
       let style = {};
+      if (!this.multiple) return style;
       if (this.showPlaceholder) {
         style = {
           width: '100%'
@@ -339,13 +348,18 @@ export default {
       return style;
     },
     showCloseIcon() {
-      return this.selectedMultiple.length > 0 && this.isHover && this.clearable;
+      const flag = this.isHover && this.clearable;
+      if (!this.multiple) {
+        return this.queryStr && flag;
+      }
+      return this.selectedMultiple.length > 0 && flag;
     },
     showNotFoundLabel() {
       return !this.stateTree.length;
     },
     tagMaxWidth() {
       let style = {};
+      if (!this.multiple) return style;
       if (
         this.selectedMultiple.length > this.maxTagCount ||
         document.body.clientWidth < 1280
@@ -392,6 +406,7 @@ export default {
      * 设置输入框的宽度
      */
     setInputWidth() {
+      if (!this.multiple) return;
       this.$nextTick(() => {
         const boxEl = $(this.$el).find('.enterprise-select')[0];
         const boxWidth = boxEl.getBoundingClientRect().width;
@@ -401,7 +416,7 @@ export default {
           // 排除 i 标签
           if (childEl.tagName.toLowerCase !== 'i') {
             // tag 元素
-            if (childEl.classList.contains('.ivu-tag')) {
+            if (childEl.classList.contains('ivu-tag')) {
               const eleWidth = childEl.getBoundingClientRect().width;
               tagTotalWidth += isFinite(eleWidth) ? eleWidth : 0;
             }
@@ -432,7 +447,7 @@ export default {
     renderContent(h, { data }) {
       const query = this.queryStr;
       const propData = {
-        class: `ive-tree-title ${
+        class: `ivu-tree-title ${
           data.id === this.selectedNodeId ? 'ivu-tree-title-selected' : ''
         }`
       };
@@ -447,7 +462,7 @@ export default {
       } else {
         propData.on = {
           click: () => {
-            data.checked = !data.checked;
+            data.checked = this.multiple ? !data.checked : true;
             this.onCheckChange([], data);
             this.$emit('on-node-click', data);
           }
@@ -487,7 +502,14 @@ export default {
       if (root.length <= 0) {
         this.visible = false;
       }
+      // 输入查询关键字，如果没有选择，清空查询字符串
+      if (!this.selectedNodeId) {
+        this.queryStr = '';
+      }
       this.isFocus = false;
+    },
+    emitInput() {
+      this.$emit('input', this.getValues());
     },
     /**
      * 显示选择的列表
@@ -519,11 +541,7 @@ export default {
     handleInputDelete(e) {
       if (this.disabledDelkey || this.disabled) return;
       const targetValue = e.target.value;
-      if (
-        this.selectedMultiple.length &&
-        this.queryStr === '' &&
-        targetValue === ''
-      ) {
+      if (this.selectedMultiple.length && !this.queryStr && !targetValue) {
         this.removeTag(this.selectedMultiple[this.selectedMultiple.length - 1]);
       }
     },
@@ -551,24 +569,42 @@ export default {
      * 通过关键字搜索 node
      */
     getDataByQueryStr(queryStr) {
-      return this.rawFlatState.filter(item => {
-        item.node.title.includes(queryStr);
-      });
+      return this.rawFlatState.filter(item =>
+        item.node.title.includes(queryStr)
+      );
     },
     /**
      * 搜索，输入框值改变时触发
      */
     onInputChange: debounce(16.7, false, function() {
-      const { queryStr, rawFlatState } = this;
+      const { queryStr, rawFlatState, multiple } = this;
+      if (!multiple) {
+        this.options = [];
+      }
       if (!queryStr) {
-        this.fetchTreeData();
+        this.selectedNodeId = '';
+        this.emitInput();
+        if (!multiple) {
+          // 手动调用 FormItem 的验证方法
+          const parent = this.$parent;
+          if (parent && parent.onFieldChange) {
+            parent.onFieldChange();
+          }
+        }
+        this.resolveStateValue(this.treeData, !!multiple);
       } else {
         this.loading = true;
+        this.visible = true;
         setTimeout(() => {
           const result = this.getDataByQueryStr(queryStr).reduce(
             (prev, cur) => prev.concat(cur),
             []
           );
+          // 如果无匹配结果，同步外界 v-model
+          if (result.length <= 0 || this.options.length <= 0) {
+            this.selectedNodeId = '';
+            this.emitInput();
+          }
           // 获取查询结果和其父节点，组成新的数组
           const queryResult = new Map();
           result.forEach(item => {
@@ -589,9 +625,7 @@ export default {
             }
           });
           // 把 queryResult 数组组装成 tree 格式的数据
-          this.stateTree = deepCopy(
-            this.transferMapToTree(queryResult, true)
-          );
+          this.stateTree = deepCopy(this.transferMapToTree(queryResult, true));
           this.flatState = Object.freeze(this.compileFlatState());
           this.loading = false;
         }, 100);
@@ -604,6 +638,7 @@ export default {
         this.showTree = false;
         this.visible = false;
         this.isFocus = false;
+        this.emitInput();
       }
     },
     /**
@@ -621,9 +656,9 @@ export default {
           }
         });
         const p = map.get(node.pid);
-        p.children.push(node);
         if (p && node.id !== node.pid) {
           p.expand = expand;
+          p.children.push(node);
         } else {
           r.push(node);
         }
@@ -671,7 +706,7 @@ export default {
     },
     // emit envent
     emitEvent(inputVal, changeVal) {
-      let changeParams = changeVal || this.getValusFromMap();
+      let changeParams = changeVal || this.getValuesFromMap();
       this.$emit('input', inputVal || this.getValues());
       this.$emit('on-change', changeParams);
       if (!this.multiple) {
@@ -709,29 +744,33 @@ export default {
         const rootNode = this.flatState[0] ? this.flatState[0].node : {};
         if (rootNode.hasAuth) {
           values = [rootNode.id];
-        } else {
-          values = Array.isArray(value)
-            ? multiple
-              ? value
-              : value[0]
-                ? [value[0]]
-                : []
-            : value
-              ? [value]
-              : [];
+          this.queryStr = rootNode[this.treeProps.name];
         }
-        values.forEach(id => {
-          const [filterNode] = flatState.filter(item => item.node.id === id);
-          if (filterNode || (Array.isArray(filterNode) && filterNode.length > 0)) {
-            const node = filterNode.node;
-            this.setNodeChecked(node, true);
-            this.addNodeToMap(filterNode.nodeKey, node);
+      } else {
+        values = Array.isArray(value)
+          ? multiple
+            ? value
+            : value[0]
+              ? [value[0]]
+              : []
+          : value
+            ? [value]
+            : [];
+      }
+      values.forEach(id => {
+        const [filterNode] = flatState.filter(item => item.node.id === id);
+        if (filterNode) {
+          const node = filterNode.node;
+          this.setNodeChecked(node, true);
+          this.addNodeToMap(filterNode.nodeKey, node);
+          if (!multiple) {
+            this.queryStr = node.label;
           }
-        });
-        this.setOptions();
-        if (!this.isFocus) {
-          this.emitEvent();
         }
+      });
+      this.setOptions();
+      if (!this.isFocus) {
+        this.emitEvent();
       }
     },
     /**
@@ -773,7 +812,7 @@ export default {
      * 重置除自己外其他节点 checked = false
      */
     resetCheckedExcept(nodeKey) {
-      const {flatState} = this;
+      const { flatState } = this;
       for (let i = 0; i < flatState.length; i++) {
         const item = flatState[i];
         if (nodeKey !== item.nodeKey) {
@@ -785,36 +824,50 @@ export default {
      * 节点勾选时触发
      */
     onCheckChange(nodes, node) {
-      const {checked, nodeKey, id} = node;
-      const {multiple} = this;
-      this.queryStr = '';
-      this.$refs.input.focus();
-      // 单选时的处理逻辑
-      // 重置除自己外其他节点的 checked = false
-      if (!multiple) {
+      const { checked, nodeKey, id } = node;
+      const { multiple } = this;
+      if (multiple) {
+        this.queryStr = '';
+      } else {
+        this.queryStr = node.label;
+        this.visible = false;
+        // 单选时的处理逻辑
+        // 重置除自己外其他节点的 checked = false
         this.resetCheckedExcept(nodeKey);
       }
+      this.$refs.input.focus();
+
       if (checked) {
         this.selectedNodeId = id;
         // 添加当前节点到 Map
         this.addNodeToMap(nodeKey, node);
-        // 需求1：如果父节点是折叠状态，当勾选时其下所有的子节点都要勾选
+        // 需求：如果父节点是折叠状态，当勾选时其下所有的子节点都要勾选
         // 设置子节点为勾选状态，并添加到 Map
         // 只有父节点才存在 expand 属性
-        if ('expand' in node && !node.expand && node.children.length > 0 && this.multiple) {
+        if (
+          'expand' in node &&
+          !node.expand &&
+          node.children.length > 0 &&
+          multiple
+        ) {
           this.setChildNodeChecked(node.children, true);
-        } else {
-          this.selectedNodeId = '';
-          this.removeNodeFromMap(nodeKey);
-          // 取消子节点的勾选状态，并从 Map 中移除
-          if ('expand' in node && !node.expand && node.children.length > 0 && this.multiple) {
-            this.setChildNodeChecked(node.children, false);
-          }
         }
-        // 设置 Select 下拉选项及 v-model
-        this.setOptions();
-        this.emitEvent();
+      } else {
+        this.selectedNodeId = '';
+        this.removeNodeFromMap(nodeKey);
+        // 取消子节点的勾选状态，并从 Map 中移除
+        if (
+          'expand' in node &&
+          !node.expand &&
+          node.children.length > 0 &&
+          multiple
+        ) {
+          this.setChildNodeChecked(node.children, false);
+        }
       }
+      // 设置 Select 下拉选项及 v-model
+      this.setOptions();
+      this.emitEvent();
     },
     /**
      * 设置子节点的勾选状态
@@ -848,7 +901,7 @@ export default {
       nodes.forEach(node => {
         const label = node.title || node.name;
         const value = node.id || node.value;
-        options.push({label, value});
+        options.push({ label, value });
       });
       this.options = options;
     },
@@ -869,18 +922,18 @@ export default {
      * 从 Map 集合中删除 node
      */
     removeNodeFromMap(nodeKey) {
-      const {selectMap} = this;
+      const { selectMap } = this;
       // fix：修复单选时不能删除的 bug
       selectMap.has(nodeKey) && selectMap.delete(nodeKey);
     },
     /**
      * 获取 values
      */
-    getValusFromMap() {
+    getValuesFromMap() {
       return [...this.selectMap.values()];
     },
     /**
-     * 清空
+     * 清空 Map
      */
     clearMap() {
       this.selectMap.clear();
@@ -889,19 +942,21 @@ export default {
      * 添加 node 到 Map 集合
      */
     addNodeToMap(nodeKey, node) {
-      const {multiple, selectMap} = this;
+      const { multiple, selectMap } = this;
       // 单选时每次先清空
       if (!multiple) {
         selectMap.clear();
       }
       selectMap.set(nodeKey, node);
     },
-    resolveStateValue(treeData) {
+    resolveStateValue(treeData, isInitValues = true) {
       this.stateTree = this.deepTransformTreeData(treeData);
       this.cacheStateTree = deepCopy(this.stateTree);
       this.flatState = Object.freeze(deepCopy(this.compileFlatState()));
       this.rawFlatState = Object.freeze(deepCopy(this.flatState));
-      this.setValues();
+      if (isInitValues) {
+        this.setValues();
+      }
     },
     /**
      * 从服务端获取数据
@@ -910,10 +965,10 @@ export default {
       if (this.treeData && !force) {
         return this.resolveStateValue(this.treeData);
       }
-      const {auth, status} = this.query;
+      const { auth, status } = this.query;
       let treeData = [];
       this.loading = true;
-      let params = {auth, status, ...this.requestParams};
+      let params = { auth, status, ...this.requestParams };
       if (this.enterpriseId) {
         params.enterpriseId = this.enterpriseId;
       }
@@ -927,31 +982,34 @@ export default {
       if (this.remoteMethod.toUpperCase === 'POST') {
         reqConfig.data = params;
       }
-      this.$request(reqConfig).then(res => {
-        const root = res.data;
-        if (Array.isArray(root)) {
-          treeData = root;
-        } else {
-          treeData = root ? [root] : [];
-          if (treeData.length > 0 && this.disabledRootNode) {
-            treeData[0].disabled = true;
+      this.$request(reqConfig)
+        .then(res => {
+          const root = res.data;
+          if (Array.isArray(root)) {
+            treeData = root;
+          } else {
+            treeData = root ? [root] : [];
+            if (treeData.length > 0 && this.disabledRootNode) {
+              treeData[0].disabled = true;
+            }
           }
-        }
-        this.treeData = treeData;
-        this.resolveStateValue(treeData);
-      }).catch(err => {
-        this.flatState = [];
-        console.log(err);
-      }).finally(() => {
-        this.loading = false;
-        this.$emit('on-loaded', {data: treeData});
-        callback && callback();
-      });
+          this.treeData = this.formatter(treeData);
+          this.resolveStateValue(this.treeData);
+        })
+        .catch(err => {
+          this.flatState = [];
+          console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.$emit('on-loaded', { data: treeData });
+          callback && callback();
+        });
     },
     /**
      * 深度转换树数据
      */
-    dataTransformTreeData(sourceArr = [], targetArr) {
+    deepTransformTreeData(sourceArr = [], targetArr) {
       const arr = targetArr || [];
       for (let i = 0; i < sourceArr.length; i++) {
         const obj = sourceArr[i];
@@ -993,32 +1051,32 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.cz-enterprise-tree{
+.cz-enterprise-tree {
   padding-left: 6px;
 }
-.option-list-item{
+.option-list-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
 }
-.ivu-select-selection{
+.ivu-select-selection {
   overflow: hidden;
 }
-.ivu-select-input{
- /deep/ .ivu-input{
-   border: none !important;
-   padding-left: 0;
-   box-shadow: none;
- }
+.ivu-select-input {
+  /deep/ .ivu-input {
+    border: none !important;
+    padding-left: 0;
+    box-shadow: none;
+  }
 }
-.ivu-form-item-error .tree-input{
-  /deep/ .ivu-input{
-    border:none;
+.ivu-form-item-error .tree-input {
+  /deep/ .ivu-input {
+    border: none;
   }
 }
 .ivu-select-selection,
-.ivu-input-wrapper{
+.ivu-input-wrapper {
   min-width: 0;
 }
 </style>
