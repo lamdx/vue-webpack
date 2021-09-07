@@ -139,3 +139,20 @@ export default {
 ```
 
 然后在 main.js 中引入这个 css 文件
+
+## watch
+
+```js
+watch: {
+  'this.$refs.content': {
+    deep: true,
+    handler() {
+      this.$refs.content.style.height = `${this.$refs.title.offsetHeight +
+        this.$refs.item.offsetHeight * this.options.length}px`;
+    }
+  }
+}
+
+// filter 的使用
+this.$options.filters.toPercent()
+```
