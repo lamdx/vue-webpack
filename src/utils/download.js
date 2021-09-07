@@ -1,4 +1,4 @@
-import { LoadingBar } from 'iview';
+import { LoadingBar, Message } from 'iview';
 import request from './http';
 export function downloadBlob(blob, fileName) {
   // IE
@@ -15,7 +15,9 @@ export function downloadBlob(blob, fileName) {
     document.body.removeChild(linkEl);
   }
 }
-
+/**
+ * 文件下载公共方法
+ */
 export function handleDownload(config) {
   LoadingBar.start();
   request({
@@ -24,11 +26,15 @@ export function handleDownload(config) {
     responseType: 'blob'
   })
     .then(res => {
-      downloadBlob(
-        new Blob([res]),
-        `${config.srcFlieName}.${config.fileFormat}`
-      );
-      LoadingBar.finish();
+      downloadFileReader(res)
+        .then(data => {
+          downloadBlob(new Blob([data]), `${config.srcFlieName}.${config.fileFormat}`);
+          LoadingBar.finish();
+        })
+        .catch(err => {
+          LoadingBar.error();
+          Message.err(err || '下载文件失败');
+        });
     })
     .catch(err => {
       console.error(err);
@@ -36,7 +42,9 @@ export function handleDownload(config) {
     });
 }
 
-// 处理文件流下载报错
+/**
+ * 处理文件流下载报错
+ */
 export function downloadFileReader(res) {
   return new Promise((resolve, reject) => {
     if (res.type === 'application/json') {
