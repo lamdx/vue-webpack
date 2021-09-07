@@ -18,7 +18,7 @@
         <!-- 选择的标签，只有多选模式才显示 tag -->
         <template v-if="multiple">
           <div
-            v-if="maxTagCount === undefined || index < maxTagCount"
+            v-if=" index < maxTagCount"
             v-for="(item, index) in selectedMultiple"
             :key="index"
             :style="tagMaxWidth"
@@ -33,9 +33,7 @@
           </div>
           <!-- 最大标签显示样式 -->
           <div
-            v-if="
-              maxTagCount !== undefined && selectedMultiple.length > maxTagCount
-            "
+            v-if="selectedMultiple.length > maxTagCount"
             class="ivu-tag ivu-tag-checked"
             @click.stop="showOptions"
           >
@@ -635,7 +633,7 @@ export default {
       // 如果没有搜索出结果，清空查询关键字
       if (this.stateTree.length <= 0) {
         this.queryStr = '';
-        this.showTree = false;
+        this.selectedNodeId = '';
         this.visible = false;
         this.isFocus = false;
         this.emitInput();
@@ -704,7 +702,7 @@ export default {
       }
       return ids;
     },
-    // emit envent
+    // emit event
     emitEvent(inputVal, changeVal) {
       let changeParams = changeVal || this.getValuesFromMap();
       this.$emit('input', inputVal || this.getValues());
@@ -809,7 +807,7 @@ export default {
       return flatTree;
     },
     /**
-     * 重置除自己外其他节点 checked = false
+     * 重置除自己外其他节点的 checked = false
      */
     resetCheckedExcept(nodeKey) {
       const { flatState } = this;
@@ -878,13 +876,13 @@ export default {
         const node = this.getNodeByNodekey(nodeKey);
         if (node.hasAuth) {
           this.setNodeChecked(node, state);
-        }
-        // 如果勾选，添加到 Map
-        if (state) {
-          this.addNodeToMap(nodeKey, node);
-        } else {
+          // 如果勾选，添加到 Map
+          if (state) {
+            this.addNodeToMap(nodeKey, node);
+          } else {
           // 如果取消勾选，从 Map 中删除
-          this.removeNodeFromMap(nodeKey);
+            this.removeNodeFromMap(nodeKey);
+          }
         }
         // 深度递归
         if (node.children && node.children.length > 0) {
@@ -952,7 +950,7 @@ export default {
     resolveStateValue(treeData, isInitValues = true) {
       this.stateTree = this.deepTransformTreeData(treeData);
       this.cacheStateTree = deepCopy(this.stateTree);
-      this.flatState = Object.freeze(deepCopy(this.compileFlatState()));
+      this.flatState = Object.freeze(this.compileFlatState());
       this.rawFlatState = Object.freeze(deepCopy(this.flatState));
       if (isInitValues) {
         this.setValues();
@@ -960,6 +958,7 @@ export default {
     },
     /**
      * 从服务端获取数据
+     * @params { Boolean } force 是否强制加载
      */
     fetchTreeData(force = false, callback) {
       if (this.treeData && !force) {
