@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+// 只需浏览器就可以查看 state
 import logger from 'vuex/dist/logger';
 import getters from './getter';
 Vue.use(Vuex);
