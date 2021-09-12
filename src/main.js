@@ -9,6 +9,8 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 // 动态引入图片
 import '@/assets/images';
+// filter 过滤器
+import './filters';
 
 Vue.use(iView);
 // Vue.prototype.$request = http.request;
