@@ -302,7 +302,6 @@ result
 object
 array
 
-
 ## 数据结构转换
 
 - map 遍历取到数组对象中的部分属性值
@@ -487,28 +486,28 @@ this.$nextTick(() => {
 
 ```js
 // 表单失焦时实时校验
-checkData = function () {
+checkData = function() {
   if (!this.count) {
-    this.alertDialog('数量不能为空');
+    this.alertDialog("数量不能为空");
     return false;
   } else {
     var reg = /^[0-9]+[\.]{0,1}[0-9]{0,5}$/;
     if (!reg.test(this.count)) {
-      this.alertDialog('只能为数字，且最多允许5位小数');
+      this.alertDialog("只能为数字，且最多允许5位小数");
       return false;
     }
   }
   if (!this.upDate) {
-    this.alertDialog('开始日期不能为空');
+    this.alertDialog("开始日期不能为空");
     return false;
   }
   if (!this.downDate) {
-    this.alertDialog('结束日期不能为空');
+    this.alertDialog("结束日期不能为空");
     return false;
   }
   return true;
 };
-doNext = function () {
+doNext = function() {
   var flag = checkData();
   if (!flag) {
     return;
@@ -516,10 +515,26 @@ doNext = function () {
   var params = {
     count: this.count,
     upDate: this.upDate,
-    downDate: this.downDate,
+    downDate: this.downDate
   };
-  $remote.post('queryware.do', params, function (data) {
+  $remote.post("queryware.do", params, function(data) {
     // 相关处理逻辑以及跳转
   });
 };
 ```
+
+## 代理请求日志输出
+
+```js
+dev: {
+  proxyTable: {
+    "/api": {
+      target: "http://127.0.0.1:3000",
+      logLevel: "debug", // 代理请求日志输出
+      changeOrigin: true
+    }
+  }
+}
+```
+
+## 
