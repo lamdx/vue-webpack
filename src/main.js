@@ -15,6 +15,8 @@ import './filters';
 Vue.use(iView);
 // Vue.prototype.$request = http.request;
 Vue.use(http);
+
+// 关闭 Vue 在启动时生成生产提示
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
@@ -26,7 +28,12 @@ Vue.config.productionTip = false;
 //   template: '<App/>'
 // });
 
-const app = new Vue({
+//  el: '#app', 等价于 vm.$mount('#app'); 但是 vm.$mount('#app');更加灵活
+
+// 完整版的 vue.js 包含 核心功能 + 模板解析器
+// vue.runtime.js 是运行版的 Vue，只包含核心功能，没有模板解析器；创建实例的时候不能使用 template: '<App/>'
+// vue.runtime.js 较 vue.js 小了近三分之一；创建实例的时候只能使用 render 函数
+const vm = new Vue({
   router,
   store,
   render: h => h(App)
@@ -38,4 +45,4 @@ import(/* webpackChunkName:"mock-data" */ '@/mock/index.js').then(res => {
   res.mockFilter();
 });
 // }
-app.$mount('#app');
+vm.$mount('#app');
