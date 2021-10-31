@@ -537,4 +537,23 @@ dev: {
 }
 ```
 
-## 
+## \$nextTick
+
+作用: 在下一次 DOM 更新结束后执行指定的回调
+什么时候用: 当改变数据后，要基于更新后的新 DOM 进行某些操作时，要在 nextTick 所指定的回调函数中执行
+
+```js
+// input 点击编辑的时候 input 可编辑并且获取焦点
+handleEdit(todo) {
+  if (todo.hasOwnProperty('isEdit')) {
+    todo.isEdit = true;
+  } else {
+    todo.isEdit = false;
+  }
+  this.$nextTick(() => {
+    this.$refs.input.focus();
+  });
+}
+```
+
+##
