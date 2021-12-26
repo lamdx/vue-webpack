@@ -42,6 +42,7 @@ instance.interceptors.request.use(config => {
 // 响应 拦截
 instance.interceptors.response.use(
   response => {
+    // response = { config: {}, data: {}, headers: {}, request: {}, status: 200, statusText: 'ok' };
     if (response.config && response.config.loading) {
       // Spin.hide();
     }
