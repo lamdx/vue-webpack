@@ -4,6 +4,12 @@ import Vuex from 'vuex';
 import logger from 'vuex/dist/logger';
 import getters from './getter';
 Vue.use(Vuex);
+
+// require.context(directory, useSubdirectories, regExp)
+// 常用于动态加载模块
+// directory：表示检索的目录
+// useSubdirectories：表示是否检索子文件夹
+// regExp：匹配文件的正则表达式，一般是文件名
 const modulesFiles = require.context('./modules', true, /\.js$/);
 
 // you do not need `import app from './modules/app'`

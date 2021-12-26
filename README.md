@@ -20,6 +20,100 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+## Vue webpack
+
+```shell
+# 初始化 Vue webpack 项目
+vue init webpack <projectname>
+? Project name vue-webpack
+? Project description A Vue.js project
+? Author lamdx <513256514@qq.com>
+? Vue build standalone
+? Install vue-router? (Y/n) Y
+? Use ESLint to lint your code? (Y/n) Y
+? Pick an ESLint preset (Use arrow keys)
+> Standard (https://github.com/standard/standard)
+  Airbnb (https://github.com/airbnb/javascript)
+  none (configure it yourself)
+? Set up unit tests (Y/n) n
+? Setup e2e tests with Nightwatch? (Y/n) n
+? Should we run `npm install` for you after the project has been created? (recommended) (Use arrow keys)
+> Yes, use NPM
+  Yes, use Yarn
+  No, I will handle that myself
+npm install less less-loader axios vuex
+```
+
+## 项目目录
+
+```
+│  .babelrc                       ES6 语法编译配置
+│  .editorconfig                  ES6 语法检查配置
+│  .eslintignore                  eslint 规则检查忽略的文件格式
+│  .eslintrc.js                   eslint 规则配置
+│  .gitignore                     git 上传需要忽略的文件格式
+│  .postcssrc.js
+│  index.html                     入口文件
+│  package-lock.json
+│  package.json                   项目描述文件
+│  README.md                      项目说明
+│
+├─build 项目构建webpack相关代码
+│      build.js                   生产环境构建代码
+│      check-versions.js          检查node、npm等版本
+│      logo.png
+│      utils.js                   构建工具相关
+│      vue-loader.conf.js         loader的配置文件
+│      webpack.base.conf.js       webpack基础配置
+│      webpack.dev.conf.js        webpack开发环境配置
+│      webpack.prod.conf.js       webpack生产环境配置
+│
+├─config
+│      dev.env.js                 开发环境变量
+│      index.js                   项目一些配置变量
+│      prod.env.js                生产环境变量
+│
+├─node_modules                    依赖的node工具包目录
+├─src 源码目录
+│  │  App.vue                     页面级Vue 组件
+│  │  main.js                     页面入口文件
+│  │
+│  ├─components                   组件目录
+│  │
+│  ├─filter                       全局过滤器
+│  │      index.js
+│  │
+│  ├─router                       路由配置目录
+│  │      index.js
+│  │
+│  ├─store                        Vuex配置
+│  │      index.js
+│  │
+│  └─views                        视图目录
+│
+└─static                          静态文件目，比如一些图片
+        .gitkeep
+```
+
+## 不启用 eslint
+
+- 修改 build/webpack.base.conf.js
+
+```js
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: "eslint-loader",
+  enforce: "pre",
+  include: [resolve("src"), resolve("test")],
+  options: {
+    formatter: require("eslint-friendly-formatter"),
+    emitWarning: !config.dev.showEslintErrorsInOverlay
+  }
+});
+// 在 module:{rules: []} 注释下面这行代码
+// ...(config.dev.useEslint ? [createLintingRule()] : []),
+```
+
 ## 使用 iView 时报 "Parsing error: x-invalid-end-tag" 错误的解决方案
 
 问题原因 iView 将标签渲染为原生 html 标签时，由于这些标签是自闭合的，所以有 end 标签会报错。
@@ -33,7 +127,7 @@ rules: {
 
 ## Vuex 严格模式下 store 存储 iView 表单报错
 
-- 不要在发布环境下启用严格模式！严格模式会深度监测状态树来检测不合规的状态变更——请确保在发布环境下关闭严格模式，以避免性能损失。
+- 不要在发布环境下启用严格模式！严格模式会深度监测状态树来检测不合规的状态变更——请确保在发布环境下关闭严格模式，以避免性能损失
 
 ```js
 export default new Vuex.Store({
@@ -159,21 +253,21 @@ this.$options.filters.toPercent()
 
 ## 埋点
 
-埋点也叫日志上报，指的是前端功能中，根据需求来添加对用户行为的统计工作，并且进行数据上报
+- 埋点也叫日志上报，指的是前端功能中，根据需求来添加对用户行为的统计工作，并且进行数据上报
 
-为什么需要埋点？
-埋点的作用就是数据采集，记录用户在客户端的操作记录和客户端响应情况。用来跟踪应用或者网站的使用情况，追踪用户行为。包括页面访问统计、来源渠道分析、漏斗分析等。
+- 为什么需要埋点？
+  埋点的作用就是数据采集，记录用户在客户端的操作记录和客户端响应情况；用来跟踪应用或者网站的使用情况，追踪用户行为；包括页面访问统计、来源渠道分析、漏斗分析等。
 
-埋点的目的大致分为以下两类
-用户行为追踪：主要是产品，运营及其他业务人员使用；跟踪应用或者网站的使用情况，追踪用户行为，包括页面访问统计、来源渠道分析、漏斗分析等
-质量监控：主要是技术和产品使用；记录客户端闪退、异常、性能等质量数据，监控质量异常。当发生生产问题时还原用户操作
+- 埋点的目的大致分为以下两类
+  用户行为追踪：主要是产品，运营及其他业务人员使用；跟踪应用或者网站的使用情况，追踪用户行为，包括页面访问统计、来源渠道分析、漏斗分析等
+  质量监控：主要是技术和产品使用；记录客户端闪退、异常、性能等质量数据，监控质量异常；当发生生产问题时还原用户操作
 
 ## npm run lint 修复文件
 
---ext：可以指定在指定目录中搜索 JavaScript 文件时，ESLint 将使用哪些文件扩展名。默认扩展名为.js。
+--ext：可以指定在指定目录中搜索 JavaScript 文件时，ESLint 将使用哪些文件扩展名，默认扩展名为.js
 
---fix：该选项指示 ESLint 试图修复尽可能多的问题。修复只针对实际文件本身，而且剩下的未修复的问题才会输出。
---fix-dry-run：该选项与 --fix 有相同的效果，唯一一点不同是，修复不会保存到文件系统中。
+--fix：该选项指示 ESLint 试图修复尽可能多的问题，修复只针对实际文件本身，而且剩下的未修复的问题才会输出
+--fix-dry-run：该选项与 --fix 有相同的效果，唯一一点不同是，修复不会保存到文件系统中
 
 ## 浏览器输出 store 日志
 
@@ -186,7 +280,7 @@ export default new Vuex.Store({
 
 ## 数组应用
 
-数组对象中的值转义 过滤 非空验证
+- 数组对象中的值转义 过滤 非空验证
 
 ```js
 var list = [
