@@ -1,0 +1,36 @@
+// 声明变量的值尽量不要带 '' 例如 @trans: 'transparent'; 因为这样编译后的 css 样式会不生效
+$trans: transparent;
+$f8: #f8f8f8;
+@mixin setBar($c: $trans, $sc: $trans, $t: 12px, $r: 12px, $b: 12px, $l: 12px) {
+  border-radius: $t $r $b $l;
+  background: linear-gradient(to right, $c 0%, $sc 100%);
+  &:not(.is-radius):after {
+    position: absolute;
+    content: "";
+    top: 0;
+    bottom: 0;
+    border: 12px solid $trans;
+    @if $l==12px {
+      right: 0;
+      border-bottom-color: $f8;
+      border-right-color: $f8;
+    } @else if $r ==12px {
+      left: 0;
+      border-top-color: $f8;
+      border-left-color: $f8;
+    }
+  }
+}
+.bar-item {
+  position: relative;
+  height: 24px;
+  &.bar-left {
+    @include setBar(#ff9247, #ff2927, 12px, 0, 0, 12px);
+  }
+  &.bar-right {
+    @include setBar(#1b4dc6, #68b1e8, 0, 12px, 12px, 0);
+  }
+  &.is-radius {
+    border-radius: 12px;
+  }
+}
