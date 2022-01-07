@@ -11,6 +11,8 @@ import 'iview/dist/styles/iview.css';
 import '@/assets/images';
 // filter 过滤器
 import './filters';
+// 统一管理请求 api
+import * as API from './api';
 
 Vue.use(iView);
 // Vue.prototype.$request = http.request;
@@ -40,6 +42,7 @@ const vm = new Vue({
   beforeCreate() {
     // 安装全局事件总线
     Vue.prototype.$bus = this;
+    Vue.prototype.$api = API;
   }
 });
 
