@@ -76,6 +76,8 @@ export default {
 // 声明变量的值尽量不要带 '' 例如 @trans: 'transparent'; 因为这样编译后的 css 样式会不生效
 @trans: transparent;
 @f8: #f8f8f8;
+@barHeiht: 24px;
+@barPadding: 8px;
 // 方法/混入
 .setBar(@c: @trans, @sc: @trans, @t: 12px, @r: 12px, @b: 12px, @l: 12px) {
   border-radius: @t @r @b @l;
@@ -83,25 +85,24 @@ export default {
   &:not(.is-radius):after {
     position: absolute;
     content: "";
-    top: 0;
-    bottom: 0;
-    border: 12px solid @trans;
+    width: 0;
+    height: 0;
     // 条件判断 & when(@l=12px){}
     & when(@l=12px) {
-      right: 0;
-      border-bottom-color: @f8;
-      border-right-color: @f8;
+      right: 2px;
+      border-left: @barPadding solid @sc;
+      border-bottom: @barHeiht solid @f8;
     }
     & when(@r=12px) {
-      left: 0;
-      border-top-color: @f8;
-      border-left-color: @f8;
+      left: -2px;
+      border-right: @barPadding solid @c;
+      border-top: @barHeiht solid @f8;
     }
   }
 }
 .bar-item {
   position: relative;
-  height: 24px;
+  height: @barHeiht;
   &.bar-left {
     .setBar(#ff9247, #ff2927, 12px, 0, 0, 12px);
   }

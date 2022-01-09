@@ -671,4 +671,89 @@ handleEdit(todo) {
 }
 ```
 
-##
+## 样式引入 也可以使用别名路径 `@` ，但是需要加上 `~`
+
+```scss
+@import "~@/assets/style/style.scss";
+```
+
+## assets 文件夹
+
+- 放置的是全部组件共用的静态资源，构建之后是不会有这个文件夹的
+
+## 功能
+
+- 尚硅谷 Vue 电商实战-尚品汇
+  - 放大镜
+  - 分页
+
+## 简易 toast 动画
+
+```vue
+<template>
+  <div>
+    <transition
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+    >
+      <div class="ball" v-if="ballFlag" ref="ball"></div>
+    </transition>
+    <button @click="changeClick"></button>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      ballFlag: false, // 控制小球的隐藏和显示的标识符
+    };
+  },
+  methods: {
+    changeClick (){
+      this.ballFlag = !this.ballFlag;
+    }
+    beforeEnter(el) {
+      el.style.transform = "translate(0,0)";
+    },
+    enter(el, done) {
+      el.offsetWidth;
+      // 小球动画优化思路：
+      // 1. 先分析导致动画不准确的本质原因：我们把小球最终位移到的位置，已经局限在了某一分辨率下的 滚动条未滚动的情况下
+      // 2. 只要分辨率和测试的时候不一样，或者 滚动条有一定的滚动距离之后， 问题就出现了
+      // 3. 因此，我们经过分析，得到结论：不能把位置的 横纵坐标 直接写死了，而是应该根据不同情况，动态计算这个坐标值
+      // 4. 经过分析，得出解题思路：先得到 徽标的 横纵坐标，再得到 小球的 横纵坐标，然后让 y 值 求差， x 值也求差，得到的结果，就是横纵坐标要位移的距离
+      // 5. 如何获取 徽标和小球的 位置？ domObject.getBoundingClientRect()
+
+      // 获取小球的 在页面中的位置
+      const ballPosition = this.$refs.ball.getBoundingClientRect();
+      // 获取 徽标 在页面中的位置
+      const badgePosition = document
+        .getElementById("badge")
+        .getBoundingClientRect();
+      const xDist = badgePosition.left - ballPosition.left;
+      const yDist = badgePosition.top - ballPosition.top;
+      el.style.transform = `translate(${xDist}px,${yDist}px)`;
+      el.style.transition = "all .3s cubic-bezier(0,-0.48,1,.46)";
+      done();
+    },
+    afterEnter(el) {
+      this.ballFlag = !this.ballFlag;
+    },
+  },
+
+};
+</script>
+<style lang="scss" scoped>
+.ball {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  z-index: 1;
+}
+</style>
+```
+
+## 
