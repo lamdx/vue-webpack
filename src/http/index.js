@@ -16,7 +16,6 @@ const instance = axios.create({
 
 // 请求 拦截
 instance.interceptors.request.use(config => {
-  debugger;
   if (config.loading) {
     // Spin.show();
   }
