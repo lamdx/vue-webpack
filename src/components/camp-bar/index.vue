@@ -76,7 +76,7 @@ export default {
 // 声明变量的值尽量不要带 '' 例如 @trans: 'transparent'; 因为这样编译后的 css 样式会不生效
 @trans: transparent;
 @f8: #f8f8f8;
-@barHeiht: 24px;
+@barHeight: 24px;
 @barPadding: 8px;
 // 方法/混入
 .setBar(@c: @trans, @sc: @trans, @t: 12px, @r: 12px, @b: 12px, @l: 12px) {
@@ -91,18 +91,18 @@ export default {
     & when(@l=12px) {
       right: 2px;
       border-left: @barPadding solid @sc;
-      border-bottom: @barHeiht solid @f8;
+      border-bottom: @barHeight solid @f8;
     }
     & when(@r=12px) {
       left: -2px;
       border-right: @barPadding solid @c;
-      border-top: @barHeiht solid @f8;
+      border-top: @barHeight solid @f8;
     }
   }
 }
 .bar-item {
   position: relative;
-  height: @barHeiht;
+  height: @barHeight;
   &.bar-left {
     .setBar(#ff9247, #ff2927, 12px, 0, 0, 12px);
   }
