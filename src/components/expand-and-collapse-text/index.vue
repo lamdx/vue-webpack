@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  // 这个文字展开收起组件 没有办法展示多种样式，不灵活
   props: {
     content: { type: String, default: '' }
   },
