@@ -17,17 +17,17 @@
 export default {
   name: 'CampBar',
   props: {
-    camplist: {
+    campList: {
       type: Array,
       default: () => [{ votes: 50 }, { votes: 5 }]
     }
   },
   computed: {
     leftObj() {
-      return this.camplist[0] || {};
+      return this.campList[0] || {};
     },
     rightObj() {
-      return this.camplist[1] || {};
+      return this.campList[1] || {};
     },
     percentLeft() {
       const { leftObj, rightObj } = this;
