@@ -45,19 +45,19 @@ function _setItem(key, value, type = 'session') {
   _getStorageType(type).setItem(key, data);
 }
 
-// // 获取原始数据
+// 获取原始数据
 function getRawItem(key, type = 'session') {
   if (!key) return;
   let raw = _getStorageType(type).getItem(key);
   return raw || '';
 }
 
-// // 获取数据
+// 获取数据
 function getItem(key, type = 'session') {
   return _getItem(key, type);
 }
 
-// // 保存数据
+// 保存数据
 function setItem(key, type = 'session') {
   _setItem(key, type);
 }

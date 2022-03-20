@@ -86,8 +86,8 @@
 <script>
 import localMixins from './mixins';
 import rmbInput from '@/components/input';
-import dtable from '@/components/table/table';
-import enters from '@/components/enterprise/enterprise';
+import dtable from '@/components/table';
+import enters from '@/components/enterprise';
 export default {
   components: { rmbInput, enters, dtable },
   mixins: [localMixins],

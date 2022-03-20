@@ -5,7 +5,7 @@
   <pdfPreview ref="pdf"></pdfPreview>
 </template>
 <script>
-import pdfPreview from "@/components/pdf/pdf.vue";
+import pdfPreview from "@/components/pdf";
 export default {
   components: { pdfPreview },
   methods: {

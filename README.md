@@ -346,10 +346,12 @@ notNull();
 ## 数组排序
 
 ```js
+// localeCompare 用本地特定的顺序来比较两个字符串
 // 从小到大排序
 tabPanes.sort((a, b) => {
   if (a.count && b.count) {
     return a.count > b.count ? 1 : -1;
+    // return a.count.localeCompare(b.count);
   }
 });
 ```
@@ -756,4 +758,4 @@ export default {
 </style>
 ```
 
-## 
+##
