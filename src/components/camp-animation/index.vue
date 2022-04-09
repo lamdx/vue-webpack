@@ -45,7 +45,7 @@
 </template>
 <script>
 export default {
-  name: 'camp',
+  name: 'CampAnimation',
   props: {
     campList: {
       type: Array,

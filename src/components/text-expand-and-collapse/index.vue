@@ -13,6 +13,7 @@
 <script>
 export default {
   // 这个文字展开收起组件 没有办法展示多种样式，不灵活
+  name: 'TextExpandAndCollapse',
   props: {
     content: { type: String, default: '' }
   },
@@ -39,7 +40,7 @@ export default {
           //   .height.replace('px', '');
           // lineHeight webkitLineClamp 的值须与样式中的值保持一致
           const lineHeight = 20;
-          const webkitLineClamp = 2;
+          const webkitLineClamp = 1;
           if (this.$refs.content.offsetHeight > lineHeight * webkitLineClamp) {
             this.isShowButton = true;
           } else {
@@ -57,7 +58,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@webkitLineClamp: 2;
+@webkitLineClamp: 1;
 @lineHeight: 20px;
 @fontSize: 14px;
 @fontColor: #666;

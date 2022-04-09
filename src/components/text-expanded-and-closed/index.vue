@@ -19,6 +19,7 @@
 <script>
 export default {
   // 这个文字展开收起组件 段落最后还是尽量还是不要 ... 展示，因为设备宽度 320px 375px 414px以及中英文符号空格占位不一致，切割宽度不好调整，可以考虑用透明度
+  name: 'TextExpandedAndClosed',
   props: {
     content: { type: String, default: '' }
   },

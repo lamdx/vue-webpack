@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import home from '@/views/home/home.vue';
+import home from '@/views/home';
 
 Vue.use(Router);
 
@@ -12,10 +12,9 @@ export default new Router({
       component: home
     },
     {
-      path: '/account',
-      name: 'account',
-      component: () =>
-        import(/* webpackChunkName: "account" */ '@/views/home/account.vue'),
+      path: '/demo',
+      name: 'demo',
+      component: () => import(/* webpackChunkName: "account" */ '@/views/demo'),
 
       // 路由组件可以通过 props 接收路由跳转传递的参数(params 和 query 是可以同时存在的)
       // 如果路由传参携带了 params 参数，跳转的时候只能使用 name 跳转，不能使用 path

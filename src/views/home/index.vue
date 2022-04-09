@@ -13,7 +13,7 @@
         ></Input>
       </FormItem> -->
       <FormItem label="Name" prop="name">
-        <rmbInput v-model="formValidate.name"></rmbInput>
+        <RmbInput v-model="formValidate.name"></RmbInput>
       </FormItem>
       <FormItem label="E-mail" prop="mail">
         <Input
@@ -85,11 +85,11 @@
 </template>
 <script>
 import localMixins from './mixins';
-import rmbInput from '@/components/input';
+import RmbInput from '@/components/rmb-input';
 import dtable from '@/components/table';
 import enters from '@/components/enterprise';
 export default {
-  components: { rmbInput, enters, dtable },
+  components: { RmbInput, enters, dtable },
   mixins: [localMixins],
   data() {
     return {
