@@ -3,19 +3,16 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+const before = require("./beforeMock")
+const proxyTable = require('./proxy')
 
 module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
-    proxyTable: {
-      "/order": {
-        target: "http://127.0.0.1:3000",
-        logLevel: "debug",
-        changeOrigin: true
-      }
-    },
+    before,
+    proxyTable,
 
     // Various Dev Server settings
     host: "localhost", // can be overwritten by process.env.HOST

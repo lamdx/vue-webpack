@@ -10,7 +10,7 @@
     <TextExpandAndCollapse :content="content" />
     <TextExpandedAndClosed :content="content" />
 
-    <Button @click="req">req</Button>
+    <Button @click="sendRequest">ajax</Button>
   </div>
 </template>
 
@@ -36,8 +36,8 @@ export default {
     return {
       list: [
         {
-          enterprise: '中国平安集团金融股份有限公司1218',
-          account: '1234567891011121314',
+          enterprise: '中国平安集团金融股份有限公司',
+          account: '12345678910',
           amount: '999,888,777,258.51元'
         }
       ],
@@ -47,7 +47,7 @@ export default {
   },
   mounted() {},
   methods: {
-    req() {
+    sendRequest() {
       this.$request({
         url: '/api/seller',
         method: 'get'
@@ -61,10 +61,11 @@ export default {
         console.log(res);
       });
       this.$request({
-        url: 'http://127.0.0.1:3000/order/ratings',
+        url: '/api/account/list',
         method: 'get'
       }).then(res => {
         console.log(res);
+        this.list = res.data;
       });
     }
   }

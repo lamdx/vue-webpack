@@ -22,5 +22,9 @@ module.exports = {
     headers: {
       Referer: `${proxyHost}/star-web`
     }
+  },
+  "/api": {
+    target: "http://localhost:3000",
+    logLevel: "debug"
   }
 };
