@@ -578,6 +578,15 @@ this.$nextTick(() => {
 });
 ```
 
+## 重置数据
+
+```js
+// 重置数据
+// 组件实例的 this._data 可以操作 data 当中的响应式数据
+// this.$options 可以获取当前组件的配置对象，配置对象中 data 函数执行，返回的就是初始化的响应式数据，以此来达到重置数据的目的
+Object.assign(this._data, this.$options.data());
+```
+
 ## 前端非空校验
 
 ```js
@@ -635,22 +644,23 @@ dev: {
 
 ## \$nextTick
 
-作用: 在下一次 DOM 更新结束后执行指定的回调
-什么时候用: 当改变数据后，要基于更新后的新 DOM 进行某些操作时，要在 nextTick 所指定的回调函数中执行
-
-```js
-// input 点击编辑的时候 input 可编辑并且获取焦点
-handleEdit(todo) {
-  if (todo.hasOwnProperty('isEdit')) {
-    todo.isEdit = true;
-  } else {
-    todo.isEdit = false;
+- 作用：在下一次 DOM 更新循环结束后执行指定的回调
+- 什么时候用
+  - 当改变数据后，要基于更新后的新 DOM 进行某些操作时，在 nextTick 所指定的回调函数中执行即可
+  ```js
+  // 表单元素 input 点击编辑的时候 input 可编辑并且获取焦点(自动聚焦)，失去焦点的时候为 span
+  handleEdit(todo) {
+    if (todo.hasOwnProperty('isEdit')) {
+      todo.isEdit = true;
+    } else {
+      todo.isEdit = false;
+    }
+    // 以上代码执行完之后，DOM 结构是还没有的，直接执行 this.$refs.input.focus(); 是没有效果的，所以需要借助 $nextTick
+    this.$nextTick(() => {
+      this.$refs.input.focus();
+    });
   }
-  this.$nextTick(() => {
-    this.$refs.input.focus();
-  });
-}
-```
+  ```
 
 ## 路由组件可以通过 props 接收路由跳转传递的参数
 
@@ -719,6 +729,7 @@ export default {
       el.style.transform = "translate(0,0)";
     },
     enter(el, done) {
+      // 触发回流激活动画
       el.offsetWidth;
       // 小球动画优化思路：
       // 1. 先分析导致动画不准确的本质原因：我们把小球最终位移到的位置，已经局限在了某一分辨率下的 滚动条未滚动的情况下
@@ -758,4 +769,114 @@ export default {
 </style>
 ```
 
-##
+## 求任意两个数的最大公约数&最小公倍数
+
+```js
+// 求任意两个数的最大公约数
+function greatestCommonDivisor(a, b) {
+  if (b == 0) {
+    return a;
+  }
+  var mod = a % b;
+  return greatestCommonDivisor(b, mod);
+}
+var a = 15;
+var b = 10;
+console.log(greatestCommonDivisor(a, b));
+greatestCommonDivisor(15, 10);
+// 求任意两个数的最小公倍数
+var lowestCommonMultiple = (a * b) / greatestCommonDivisor(a, b);
+console.log(lowestCommonMultiple);
+```
+
+## props 辅助函数
+
+```js
+// props 辅助函数
+const mapProp = (dataSourceProp = []) => {
+  const computedProp = {};
+  for (const prop of dataSourceProp) {
+    computedProp[prop] = {
+      get() {
+        return (this.obj && this.obj[prop]) || "";
+      }
+    };
+  }
+  return computedProp;
+};
+export default {
+  props: ["obj"],
+  computed: {
+    ...mapProp(["id"])
+  }
+};
+```
+
+## 非数值转 0.00
+
+```js
+function formatNum(num) {
+  if (!+num || isNaN(num)) {
+    return "0.00";
+  } else {
+    return num;
+  }
+}
+console.log(formatNum(0));
+console.log(formatNum("0"));
+console.log(formatNum("-"));
+console.log(formatNum(1.11));
+```
+
+## 按需引入 lodash
+
+```js
+// 按需引入 lodash 中的深拷贝
+import cloneDeep from "lodash/cloneDeep";
+```
+
+## 删除对象的属性
+
+```js
+// 删除对象的属性
+delete obj[prop];
+```
+
+## git 忽略文件
+
+- .gitignore
+
+```shell
+# 忽略 src 目录下所有 MockData.js 文件
+src/**/MockData.js
+```
+
+## 换一换
+
+```js
+// exchange 换一换
+let arr = [];
+let size = 3;
+const prev = arr.slice(0, size);
+const next = arr.slice(size, arr.length);
+arr = [...next, ...prev];
+```
+
+## 留在当前页
+
+```js
+// 删除列表数据成功后重新查询列表，使其留在当前页
+// this.getList(page) 查询列表  this.list.length 当前页展示的数据条数
+this.getList(this.list.length > 1 ? this.page : this.page - 1);
+```
+
+## 移动端调试
+
+```js
+// 移动端 vconsole
+if (process.env.NODE_DEV !== "production") {
+  import vconsole from "vconsole";
+  const vConsole = new vconsole();
+  Vue.use(vConsole);
+}
+```
