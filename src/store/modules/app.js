@@ -1,10 +1,19 @@
+let num = JSON.parse(localStorage.getItem('num') || 1);
+
 const state = {
-  userInfo: {}
+  userInfo: {},
+  num
 };
 
 const mutations = {
   updateUserInfo: (state, userInfo) => {
     state.userInfo = userInfo;
+  },
+  // 专门负责修改 state 中的变量
+  // this.$store.commit('方法的名称', '按需传递唯一的参数')
+  setNum(state, num) {
+    state.num = num;
+    localStorage.setItem('num', JSON.stringify(state.num));
   }
 };
 

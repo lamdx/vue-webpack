@@ -2,7 +2,7 @@
   <div class="linkpayment__wrap">
     <div class="linkpayment__card" v-for="(item, i) in list" :key="i">
       <div class="pic">
-        <img v-if="i !== 0" src="@/assets/logo.png" alt="" />
+        <img v-if="i !== 0" src="@/assets/images/logo.png" alt="" />
       </div>
       <div class="info">
         <div class="head">
@@ -52,7 +52,7 @@
       @click="showAccount('addAccount')"
     >
       <div class="pic">
-        <img v-if="list.length > 0" src="@/assets/logo.png" alt="" />
+        <img v-if="list.length > 0" src="@/assets/images/logo.png" alt="" />
       </div>
       <div class="addAcount">
         <Icon type="ios-albums-outline" />

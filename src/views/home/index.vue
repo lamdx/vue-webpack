@@ -89,6 +89,7 @@ import RmbInput from '@/components/rmb-input';
 import dtable from '@/components/table';
 import enters from '@/components/enterprise';
 export default {
+  name: 'Home',
   components: { RmbInput, enters, dtable },
   mixins: [localMixins],
   data() {

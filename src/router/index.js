@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import home from '@/views/home';
+import home from '@/views/home/home';
 
 Vue.use(Router);
 
@@ -25,6 +25,17 @@ export default new Router({
       // props: { a: 1, b: 2 },
       // 函数，可以将路由 params 参数、query 参数，通过 props 传递给路由组件
       props: $route => ({ keyword: $route.params.keyword, k: $route.query.k })
+    },
+    {
+      path: '/comp',
+      name: 'comp',
+      component: () => import(/* webpackChunkName: "comp" */ '@/views/comp')
+    },
+    {
+      path: '/layout',
+      name: 'layout',
+      component: () => import(/* webpackChunkName: "layout" */ '@/views/layout')
     }
-  ]
+  ],
+  linkActiveClass: 'is_active' // 覆盖默认的路由高亮的类，默认的类叫做 router-link-active
 });
