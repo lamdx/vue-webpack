@@ -36,7 +36,7 @@ function _setItem(key, value, type = 'session') {
   let data;
   // 统一将数据转换为 json 格式进行存储
   if (value === undefined) {
-    data = JSON.stringify();
+    data = JSON.stringify('');
   } else if (typeof value === 'object') {
     data = JSON.stringify(value);
   } else {
@@ -46,30 +46,23 @@ function _setItem(key, value, type = 'session') {
 }
 
 // 获取原始数据
-function getRawItem(key, type = 'session') {
+export function getRawItem(key, type = 'session') {
   if (!key) return;
   let raw = _getStorageType(type).getItem(key);
   return raw || '';
 }
 
 // 获取数据
-function getItem(key, type = 'session') {
+export function getItem(key, type = 'session') {
   return _getItem(key, type);
 }
 
 // 保存数据
-function setItem(key, type = 'session') {
-  _setItem(key, type);
+export function setItem(key, value, type = 'session') {
+  _setItem(key, value, type);
 }
 
 // 删除数据
-function removeItem(key, type = 'session') {
+export function removeItem(key, type = 'session') {
   _getStorageType(type).removeItem(key);
 }
-
-export default {
-  getRawItem,
-  getItem,
-  setItem,
-  removeItem
-};

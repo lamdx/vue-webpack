@@ -24,7 +24,7 @@ instance.interceptors.request.use(config => {
   config.headers = Object.assign(headers, config.headers);
   let menuCode = window.localStorage.getItem('menuCode') || 'menuCode';
   // FormData qs 这里还有问题
-  if (config.method.toLowerCase === 'post') {
+  if (config.method.toLowerCase() === 'post') {
     // config.data = qs.stringify(config.data);
     // FormData 不能直接追加参数
     if (config.data instanceof FormData) {
