@@ -21,7 +21,8 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-smooth-picker": "^0.4.2",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "xss": "^1.0.13"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

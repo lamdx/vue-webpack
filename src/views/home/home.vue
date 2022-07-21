@@ -82,16 +82,23 @@
         <h5>{{ file.name }}{{ file.message }}</h5>
         <h5>{{ file.uploadPercentage }}</h5>
       </div>
+      <div v-html="html"></div>
     </div>
   </div>
 </template>
 
 <script>
+import { throttle } from 'throttle-debounce';
 import { mapState, mapMutations } from 'vuex';
+import xss from 'xss';
 export default {
   name: 'Home',
   data() {
     return {
+      // 当图片加载错误时：
+      html: xss(`hello vue<img src="xx" onerror="alert('xss攻击')">`, {
+        whiteList: {}
+      }),
       count: 1,
       files: []
     };
@@ -124,8 +131,18 @@ export default {
     // window.onresize = function() {
     //   this.changeMobsfIframe();
     // };
+    window.onresize = this.throttleFunc(1);
   },
   methods: {
+    throttleFunc(num) {
+      return throttle(
+        1000,
+        num => {
+          console.log('num:', num);
+        }
+        // { noLeading: false, noTrailing: false }
+      );
+    },
     /**
      * iframe-宽高自适应显示
      */
@@ -265,6 +282,7 @@ export default {
     bottom: 0;
   }
 }
+
 p[data-v-2311c06a] {
   color: #f00;
 }

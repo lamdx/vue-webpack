@@ -880,3 +880,49 @@ if (process.env.NODE_DEV !== "production") {
   Vue.use(vConsole);
 }
 ```
+
+## 处理 v-html 的潜在 XSS 风险
+
+- 防止 XSS 跨站脚本攻击
+  对输入的数据进行过滤和转义，包含但不限于 < > " ' % ( ) & + \ \' \"
+
+```vue
+<template>
+  <div class="home">
+    <div v-html="html"></div>
+  </div>
+</template>
+```
+
+- 没有进行防止 XSS 攻击的例子
+
+```js
+export default {
+  data() {
+    return {
+      // 当图片加载错误时：
+      html: `hello vue<img src="xx" onerror="alert('xss攻击')">`
+    };
+  }
+};
+```
+
+- 解决办法
+
+```shell
+npm i xss
+```
+
+```js
+import xss from "xss";
+export default {
+  data() {
+    return {
+      // 当图片加载错误时：
+      html: xss(`hello vue<img src="xx" onerror="alert('xss攻击')">`, {
+        whiteList: {}
+      })
+    };
+  }
+};
+```
