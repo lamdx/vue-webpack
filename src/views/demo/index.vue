@@ -10,7 +10,7 @@
     <RmbInput></RmbInput>
     <TextExpandAndCollapse :content="content" />
     <TextExpandedAndClosed :content="content" />
-    <Checkbox :checkboxList="checkboxList" @on-select="checkboxConfirm" />
+    <MyCheckbox :checkboxList="checkboxList" @on-select="checkboxConfirm" />
     <FlowChart />
     <FoldingPanel />
     <MyHeader title="测试头部" />
@@ -29,68 +29,28 @@
     <TimeAxis />
     <ViewAll :left="'文件查看'" :right="'查看全部'" @go="goback"></ViewAll>
     <Tabbar />
-    <tabs v-model="tabVal" @on-click="clickTab">
-      <pane
+    <MyTabs v-model="tabVal" @on-click="clickTab">
+      <MyTabPane
         v-for="(item, i) in tabList"
         :key="i"
         :label="item.label"
         :name="item.name"
         :count="item.count"
       >
-        <list v-if="tabVal === item.name"></list>
-      </pane>
-      <pane label="标签十三" name="13">
+        <MyList v-if="tabVal === item.name"></MyList>
+      </MyTabPane>
+      <MyTabPane label="标签十三" name="13">
         标签十三内容
-      </pane>
-    </tabs>
+      </MyTabPane>
+    </MyTabs>
   </div>
 </template>
 
 <script>
 import compare from '@/mixins/compare';
-import AccountCard from '@/components/account-card';
-import CampAnimation from '@/components/camp-animation';
-import CampBar from '@/components/camp-bar';
-import DatetimePicker from '@/components/datetime-picker';
-import RmbInput from '@/components/rmb-input';
-import TextExpandAndCollapse from '@/components/text-expand-and-collapse';
-import TextExpandedAndClosed from '@/components/text-expanded-and-closed';
-import Checkbox from '@/components/checkbox';
-import FlowChart from '@/components/flow-chart';
-import FoldingPanel from '@/components/folding-panel';
-import MyHeader from '@/components/my-header';
-import PopupRadio from '@/components/popup-radio';
-import ScrollArea from '@/components/scroll-area';
-import TimeAxis from '@/components/time-axis';
-import ViewAll from '@/components/view-all';
-import Tabbar from '@/components/tabbar';
-import Tabs from '@/components/tabs/tabs';
-import Pane from '@/components/tabs/pane';
-import List from '@/components/tabs/list';
 
 export default {
   name: 'Demo',
-  components: {
-    AccountCard,
-    CampAnimation,
-    CampBar,
-    DatetimePicker,
-    RmbInput,
-    TextExpandAndCollapse,
-    TextExpandedAndClosed,
-    Checkbox,
-    FlowChart,
-    FoldingPanel,
-    MyHeader,
-    PopupRadio,
-    ScrollArea,
-    TimeAxis,
-    ViewAll,
-    Tabbar,
-    Tabs,
-    Pane,
-    List
-  },
   mixins: [compare],
   data() {
     return {
@@ -317,19 +277,6 @@ export default {
       }).then(res => {
         console.log(res);
       });
-      this.$request({
-        url: '/api/goods',
-        method: 'get'
-      }).then(res => {
-        console.log(res);
-      });
-      this.$request({
-        url: '/api/account/list',
-        method: 'get'
-      }).then(res => {
-        console.log(res);
-        this.list = res.data;
-      });
     },
     popupRadioOnHide() {
       console.log('popup-radio：可以进行校验/发起请求');
@@ -346,6 +293,7 @@ export default {
 </script>
 <style scoped lang="less">
 .demo {
-  padding: 10px;
+  height: 100%;
+  padding-bottom: 80px;
 }
 </style>

@@ -19,6 +19,7 @@
 <script>
 // import PDF from 'pdfjs-dist';
 export default {
+  name: 'Pdf',
   data() {
     return {
       src: '',

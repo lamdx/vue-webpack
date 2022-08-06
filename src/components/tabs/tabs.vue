@@ -41,7 +41,7 @@
 
 import Render from '@/components/tabs/render.js';
 export default {
-  name: 'Tabs',
+  name: 'MyTabs',
   components: { Render },
   props: {
     value: [String, Number],
@@ -125,7 +125,7 @@ export default {
     getTabs() {
       // 获取 pane
       let tabPanes = [];
-      tabPanes = this.$children.filter(item => item.$options.name === 'TabPane');
+      tabPanes = this.$children.filter(item => item.$options.name === 'MyTabPane');
       // 可设置 count，使其从小到大排序 这里排序在低版本浏览器会有问题，导致乱序
       tabPanes.sort((a, b) => {
         if (a.count && b.count) {

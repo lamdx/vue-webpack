@@ -51,6 +51,7 @@
 import { deepCopy } from '@/utils/index';
 import { getItem, setItem } from '@/utils/storage.js';
 export default {
+  name: 'MyTable',
   props: {
     value: [String, Number, Array],
     url: {

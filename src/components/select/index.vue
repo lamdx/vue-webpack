@@ -20,6 +20,7 @@
 <script>
 import { getItem, setItem } from '@/utils/storage.js';
 export default {
+  name: 'MySelect',
   props: {
     value: [String, Number, Array],
     url: {

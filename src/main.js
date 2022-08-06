@@ -13,6 +13,8 @@ import '@/assets/images';
 import './filters';
 // 统一管理请求 api
 import * as API from './api';
+// 自动化注册全局组件
+import './components';
 
 Vue.use(iView);
 // Vue.prototype.$request = http.request;

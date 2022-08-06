@@ -142,6 +142,7 @@ const prefixCls = 'ivu-select';
 const treePrefixCls = 'cz-enterprise-tree';
 const $ = function() {};
 export default {
+  name: 'Enterprise',
   props: {
     showRemoveTag: {
       type: Boolean,

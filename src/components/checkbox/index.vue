@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  name: 'Checkbox',
+  name: 'MyCheckbox',
   props: {
     checkboxList: {
       type: Array,

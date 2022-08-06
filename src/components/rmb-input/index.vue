@@ -27,6 +27,7 @@
 </template>
 <script>
 export default {
+  name: 'RmbInput',
   props: {
     value: {
       type: [String, Number],
