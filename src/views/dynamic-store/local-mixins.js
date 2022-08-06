@@ -1,4 +1,4 @@
-import dynamicStore from './dynamicStore.js';
+import dynamicStore from './dynamic-store.js';
 import { createNamespacedHelpers } from 'vuex';
 const { mapState, mapMutations } = createNamespacedHelpers('dynamicStore');
 

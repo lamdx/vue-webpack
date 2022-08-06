@@ -1,6 +1,5 @@
 <template>
   <div class="demo">
-    <Button @click="sendRequest">ajax</Button>
     <AccountCard :list.sync="accountList"></AccountCard>
     <CampAnimation />
     <br />
@@ -48,7 +47,6 @@
 
 <script>
 import compare from '@/mixins/compare';
-
 export default {
   name: 'Demo',
   mixins: [compare],
@@ -270,14 +268,6 @@ export default {
   //   });
   // },
   methods: {
-    sendRequest() {
-      this.$request({
-        url: '/api/seller',
-        method: 'get'
-      }).then(res => {
-        console.log(res);
-      });
-    },
     popupRadioOnHide() {
       console.log('popup-radio：可以进行校验/发起请求');
     },
