@@ -1,12 +1,12 @@
 <template>
   <div class="wrap">
     <div class="content">
-      <div :class="[expanded ? 'expanded' : 'closed']" ref="content">
+      <div ref="content" :class="[expanded ? 'expanded' : 'closed']">
         {{ content }}
       </div>
-      <div class="button" v-if="isShowButton" @click="toggle">
-        <div class="flex" v-if="expanded">收起<span class="icon">↑</span></div>
-        <div class="flex" v-else>
+      <div v-if="isShowButton" class="button" @click="toggle">
+        <div v-if="expanded" class="flex">收起<span class="icon">↑</span></div>
+        <div v-else class="flex">
           <span style="color:#666">...</span>
           &nbsp;展开
           <span class="icon">↓</span>
@@ -29,11 +29,6 @@ export default {
       isShowButton: false
     };
   },
-  methods: {
-    toggle() {
-      this.expanded = !this.expanded;
-    }
-  },
   watch: {
     content: {
       handler() {
@@ -55,6 +50,11 @@ export default {
         });
       },
       immediate: true
+    }
+  },
+  methods: {
+    toggle() {
+      this.expanded = !this.expanded;
     }
   }
 };

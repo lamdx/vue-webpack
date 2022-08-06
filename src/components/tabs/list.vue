@@ -8,6 +8,9 @@ export default {
       res: ''
     };
   },
+  created() {
+    this.ajax();
+  },
   methods: {
     ajax() {
       console.log('ajax');
@@ -15,9 +18,6 @@ export default {
         this.res = Math.random() * 10 + 1;
       });
     }
-  },
-  created() {
-    this.ajax();
   }
 };
 </script>

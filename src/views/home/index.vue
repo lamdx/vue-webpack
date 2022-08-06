@@ -33,9 +33,9 @@
           <Col span="11">
             <FormItem prop="date">
               <DatePicker
+                v-model="formValidate.date"
                 type="date"
                 placeholder="Select date"
-                v-model="formValidate.date"
               ></DatePicker>
             </FormItem>
           </Col>
@@ -43,9 +43,9 @@
           <Col span="11">
             <FormItem prop="time">
               <TimePicker
+                v-model="formValidate.time"
                 type="time"
                 placeholder="Select time"
-                v-model="formValidate.time"
               ></TimePicker>
             </FormItem>
           </Col>
@@ -68,14 +68,14 @@
       <FormItem label="Desc" prop="desc">
         <Input
           v-model="formValidate.desc"
-          type="textarea"
           :autosize="{ minRows: 2, maxRows: 5 }"
+          type="textarea"
           placeholder="Enter something..."
         ></Input>
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit('formValidate')">Submit</Button>
-        <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+        <Button style="margin-left: 8px" @click="handleReset('formValidate')">Reset</Button>
         {{ formValidate.name }}
       </FormItem>
     </Form>

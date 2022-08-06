@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import storage from '@/utils/storage.js';
+import { getItem, setItem } from '@/utils/storage.js';
 export default {
   props: {
     value: [String, Number, Array],
@@ -108,7 +108,7 @@ export default {
       if (this.optionlists.length > 0) return;
       if (this.url && this.params) {
         let key = this.params.dictCode;
-        let list = storage.getItem(key, 'session');
+        let list = getItem(key, 'session');
         // 枚举值优先从缓存中获取
         if (list && Array.isArray(list)) {
           this.options = list;
@@ -119,7 +119,7 @@ export default {
             method: 'get'
           }).then(res => {
             this.options = res.data;
-            storage.setItem(key, res.data, 'session');
+            setItem(key, res.data, 'session');
           });
         }
       }

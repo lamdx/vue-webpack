@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     {{ title }}
-    <i class="left" @click="goback" v-if="flag"></i>
+    <i v-if="flag" class="left" @click="goback"></i>
   </div>
 </template>
 <script>

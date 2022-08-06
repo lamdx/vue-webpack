@@ -1,7 +1,7 @@
 <template>
   <!-- 时间轴 -->
   <div class="options_list">
-    <div class="item" v-for="(item, i) in list" :key="i">
+    <div v-for="(item, i) in list" :key="i" class="item">
       <p class="title">{{ item.title }}</p>
       <p class="time">{{ item.time }}</p>
       <div class="body">

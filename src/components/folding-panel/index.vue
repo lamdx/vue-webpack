@@ -49,7 +49,7 @@
           ></i>
         </div>
       </div>
-      <div class="role_users_list" v-show="role.showContent">
+      <div v-show="role.showContent" class="role_users_list">
         <div
           v-for="(user, userIndex) in role.userInfoList"
           :key="userIndex"

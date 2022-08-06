@@ -17,10 +17,10 @@ const partMinute = allMinute.slice(0, 31);
 const allHour = ['09', '10', '11', '13', '14', '15'];
 export default {
   name: 'DatetimePicker',
+  components: { SmoothPicker },
   props: {
     time: { type: String, default: '' }
   },
-  components: { SmoothPicker },
   data() {
     return {
       timeList: [

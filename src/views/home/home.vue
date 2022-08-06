@@ -2,7 +2,7 @@
   <div class="home">
     <div>
       <input type="button" value="减" @click="minus" />
-      <input type="text" v-model="num" id="num" />
+      <input id="num" v-model="num" type="text" />
       <input type="button" value="加" @click="add" />
       <!-- 测试样式：属性选择器 跟类选择器权重一样 -->
       <p data-v-2311c06a class="test">属性选择器 跟类选择器权重一样</p>
@@ -67,11 +67,11 @@
     </div>
     <label for="fileupload"><p>文件上传label</p></label>
     <input
-      type="file"
       id="fileupload"
+      ref="fileref"
+      type="file"
       accept="image/*"
       style="display:none"
-      ref="fileref"
       @change="upload"
     />
     <div class="dropbox">
@@ -82,7 +82,7 @@
         <h5>{{ file.name }}{{ file.message }}</h5>
         <h5>{{ file.uploadPercentage }}</h5>
       </div>
-      <div v-html="html"></div>
+      <!-- <div v-html="html"></div> -->
     </div>
   </div>
 </template>
@@ -90,18 +90,21 @@
 <script>
 import { throttle } from 'throttle-debounce';
 import { mapState, mapMutations } from 'vuex';
-import xss from 'xss';
+// import xss from 'xss';
 export default {
   name: 'Home',
   data() {
     return {
       // 当图片加载错误时：
-      html: xss(`hello vue<img src="xx" onerror="alert('xss攻击')">`, {
-        whiteList: {}
-      }),
+      // html: xss(`hello vue<img src="xx" onerror="alert('xss攻击')">`, {
+      //   whiteList: {}
+      // }),
       count: 1,
       files: []
     };
+  },
+  computed: {
+    ...mapState('app', ['num'])
   },
   watch: {
     files: {
@@ -233,9 +236,6 @@ export default {
         this.uploadFile(dt.files[i]);
       }
     }
-  },
-  computed: {
-    ...mapState('app', ['num'])
   }
 };
 </script>

@@ -31,13 +31,6 @@
 <script>
 export default {
   name: 'FlowChart',
-  computed: {
-    status() {
-      return this.stepsList[this.stepsList.length - 1].status === 'Y'
-        ? 'Y'
-        : '';
-    }
-  },
   data() {
     return {
       stepsList: [
@@ -70,6 +63,13 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    status() {
+      return this.stepsList[this.stepsList.length - 1].status === 'Y'
+        ? 'Y'
+        : '';
+    }
   }
 };
 </script>

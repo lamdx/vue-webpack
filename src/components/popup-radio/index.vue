@@ -3,16 +3,16 @@
   <div class="popup_radio">
     <!-- 弹出层 -->
     <div class="pop">
-      <div class="popup_bg" v-if="showScreen" @click="closeFun"></div>
+      <div v-if="showScreen" class="popup_bg" @click="closeFun"></div>
       <div
-        class="popup_content"
         :class="{ open: showScreen }"
+        class="popup_content"
         @click="getselectval"
       >
         <slot name="popup_header"></slot>
         <p v-for="(item, i) in options" :key="i" :data-index="i">
           <span>{{ item.value }}</span>
-          <span class="right" v-if="value === item.key">✔</span>
+          <span v-if="value === item.key" class="right">✔</span>
         </p>
       </div>
     </div>

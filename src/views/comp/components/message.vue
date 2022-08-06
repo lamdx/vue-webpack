@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="message-box" v-if="show">
+    <div v-if="show" class="message-box">
       <!-- 作用域插槽 -->
       <strong><slot name="title" title="来自message的title"></slot></strong>
       <!-- 具名插槽 -->

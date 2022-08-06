@@ -1,6 +1,6 @@
 <template>
   <div class="linkpayment__wrap">
-    <div class="linkpayment__card" v-for="(item, i) in list" :key="i">
+    <div v-for="(item, i) in list" :key="i" class="linkpayment__card">
       <div class="pic">
         <img v-if="i !== 0" src="@/assets/images/logo.png" alt="" />
       </div>
@@ -14,15 +14,15 @@
         </div>
         <div class="enterprise">
           <Poptip
-            trigger="hover"
             :content="item.enterprise"
+            trigger="hover"
             placement="top-start"
           >
             <div class="ellipsis">{{ item.enterprise + item.enterprise }}</div>
           </Poptip>
         </div>
         <div class="account">
-          <Poptip trigger="hover" :content="item.account" placement="top-start">
+          <Poptip :content="item.account" trigger="hover" placement="top-start">
             <div class="ellipsis">{{ item.account }}</div>
           </Poptip>
         </div>
@@ -30,7 +30,7 @@
           <div style="border-top: 1px solid #ddd;"></div>
         </div>
         <div class="amount">
-          <Poptip trigger="hover" :content="item.amount" placement="top-start">
+          <Poptip :content="item.amount" trigger="hover" placement="top-start">
             <div class="ellipsis">{{ item.amount }}</div>
           </Poptip>
         </div>
@@ -46,9 +46,9 @@
     </div>
     <!-- 默认编辑卡片 -->
     <div
-      class="linkpayment__card"
-      key="edit"
       v-if="isShowEditCard"
+      key="edit"
+      class="linkpayment__card"
       @click="showAccount('addAccount')"
     >
       <div class="pic">
@@ -72,11 +72,11 @@
       <Input v-model="accountObj.amount" placeholder="请选择金额" />
     </Modal>
     <!-- 审批状态弹窗 -->
-    <Modal title="审批状态" v-model="isShowStatusModal" footer-hide>
+    <Modal v-model="isShowStatusModal" title="审批状态" footer-hide>
       审批状态列表
     </Modal>
     <!-- 交易详情弹窗 -->
-    <Modal title="交易详情" v-model="isShowDetailsModal" footer-hide>
+    <Modal v-model="isShowDetailsModal" title="交易详情" footer-hide>
       交易详情
     </Modal>
   </div>
@@ -101,15 +101,6 @@ export default {
       default: '1'
     }
   },
-  computed: {
-    isShowEditCard() {
-      return this.list.length < 4;
-    },
-    accountList() {
-      // 深拷贝
-      return JSON.parse(JSON.stringify(this.list)) || [];
-    }
-  },
   data() {
     return {
       numMap: { 0: '一', 1: '二', 2: '三', 3: '四' },
@@ -120,6 +111,15 @@ export default {
       isShowStatusModal: false,
       isShowDetailsModal: false
     };
+  },
+  computed: {
+    isShowEditCard() {
+      return this.list.length < 4;
+    },
+    accountList() {
+      // 深拷贝
+      return JSON.parse(JSON.stringify(this.list)) || [];
+    }
   },
   created() {},
   methods: {

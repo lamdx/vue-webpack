@@ -1,14 +1,14 @@
 <template>
   <div class="flex">
     <div
-      class="bar-item bar-left"
       :class="{ 'is-radius': isRaidus }"
       :style="setWidth('left')"
+      class="bar-item bar-left"
     ></div>
     <div
-      class="bar-item bar-right"
       :class="{ 'is-radius': isRaidus }"
       :style="setWidth('right')"
+      class="bar-item bar-right"
     ></div>
   </div>
 </template>

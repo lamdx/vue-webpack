@@ -2,8 +2,8 @@
   <div class="modal-mask">
     <div class="modal-container">
       <div
-        class="dialog-body border-b-s"
         v-infinite-scroll="loading"
+        class="dialog-body border-b-s"
         infinite-scroll-disabled="disaleScrolling"
         infinite-scroll-distance="40"
       >
@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import PDF from 'pdfjs-dist';
+// import PDF from 'pdfjs-dist';
 export default {
   data() {
     return {
@@ -39,18 +39,18 @@ export default {
     },
     loadPdfFile() {
       console.log('loading 加载中...');
-      PDF.getDocument(this.src)
-        .then(pdf => {
-          console.log('loading 关闭');
-          this.pdfDoc = pdf;
-          this.total = pdf.numPages;
-          this.$nextTick(() => {
-            this.loadingMore();
-          });
-        })
-        .catch(err => {
-          console.log(err || '文件加载失败');
-        });
+      // PDF.getDocument(this.src)
+      //   .then(pdf => {
+      //     console.log('loading 关闭');
+      //     this.pdfDoc = pdf;
+      //     this.total = pdf.numPages;
+      //     this.$nextTick(() => {
+      //       this.loadingMore();
+      //     });
+      //   })
+      //   .catch(err => {
+      //     console.log(err || '文件加载失败');
+      //   });
     },
     loading() {
       if (this.page >= this.total) {

@@ -1,6 +1,6 @@
 <template>
   <!-- 区域滚动 -->
-  <div class="wrap" ref="wrap">
+  <div ref="wrap" class="wrap">
     <div class="arrow left" @click="hander('left')">
       <i class="left"></i>
     </div>
@@ -8,11 +8,11 @@
       <i class="right"></i>
     </div>
     <div
-      class="boxes"
       :style="{
         width: list.length * adaptiveWidth + 'px',
         transform: 'translateX(-' + translate + 'px)'
       }"
+      class="boxes"
     >
       <div
         v-for="(item, i) in list"

@@ -15,10 +15,10 @@
     <FoldingPanel />
     <MyHeader title="测试头部" />
     <popupRadio
-      title="mobile单选弹框"
       :placeholder="'请选择'"
       v-model="popupRadiostatus"
       :options="popupRadioOptions"
+      title="mobile单选弹框"
       @onhide="popupRadioOnHide"
     >
       <p slot="popup_header" class="popup_header">

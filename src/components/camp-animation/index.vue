@@ -7,18 +7,18 @@
       :class="campStyle[index].positionClass"
     >
       <div
-        class="right-bevel-edge"
         v-show="item.rate && item.rate < 100"
         v-if="index === 1"
+        class="right-bevel-edge"
       ></div>
       <div
         :style="{ 'border-radius': item.rate === 100 ? '12px' : '' }"
         :class="campStyle[index].barClass"
       ></div>
       <div
-        class="left-bevel-edge"
         v-show="item.rate && item.rate < 100"
         v-if="index === 0"
+        class="left-bevel-edge"
       ></div>
     </div>
     <!-- <div class="left" :style="{ width: leftObj.width + '%' }">

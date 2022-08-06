@@ -38,12 +38,12 @@ Vue.config.productionTip = false;
 const vm = new Vue({
   router,
   store,
-  render: h => h(App),
   beforeCreate() {
     // 安装全局事件总线
     Vue.prototype.$bus = this;
     Vue.prototype.$api = API;
-  }
+  },
+  render: h => h(App)
 });
 
 // mock 数据执行方法只在指定的演示环境触发

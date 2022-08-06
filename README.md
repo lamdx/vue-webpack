@@ -366,6 +366,14 @@ str.replace(/(\d)(?=(\d{3})+(\.|$))/g, "$1,");
 
 ## CSS 中 calc() 里面的表达式 运算符前后要有空格
 
+```css
+.arrow {
+  position: absolute;
+  /* calc() 里面的表达式 运算符前后要有空格 */
+  top: calc(50% - 15px);
+}
+```
+
 ## loading
 
 ```js

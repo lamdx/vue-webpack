@@ -1,8 +1,8 @@
 <template>
   <Dropdown
     ref="dropdown"
-    trigger="custom"
     :visible="visible"
+    trigger="custom"
     transfer
     style="width:100%;"
     @on-clickoutside="onClickOutside"
@@ -18,8 +18,8 @@
         <!-- 选择的标签，只有多选模式才显示 tag -->
         <template v-if="multiple">
           <div
-            v-if=" index < maxTagCount"
             v-for="(item, index) in selectedMultiple"
+            v-if=" index < maxTagCount"
             :key="index"
             :style="tagMaxWidth"
             class="ivu-tag ivu-tag-checked"
@@ -49,17 +49,17 @@
         </template>
         <!-- 输入框 -->
         <Input
+          v-not-input-empty.length="60"
           ref="input"
           v-model.trim="queryStr"
-          v-not-input-empty.length="60"
-          type="text"
-          class="ivu-select-input tree-input"
           :placeholder="showPlaceholder ? placeholder : ''"
-          autocomplete="off"
           :spellcheck="false"
           :disabled="disabled"
           :style="inputStyle"
           :maxlength="maxlength"
+          type="text"
+          class="ivu-select-input tree-input"
+          autocomplete="off"
           @on-keydown="resetInputState"
           @on-keydown.delete="handleInputDelete"
           @on-change="onInputChange"
@@ -103,13 +103,13 @@
       v-show="showTree && !showNotFoundLabel && !loading"
       slot="list"
       ref="Tree"
-      check-strictly
       :class="treeClasses"
       :style="treeStyle"
       :data="stateTree"
       :show-checkbox="showCheckbox"
       :children-key="childrenKey"
       :render="renderContent"
+      check-strictly
       @on-check-change="onCheckChange"
     ></Tree>
     <!-- 鼠标悬停时显示选择的列表 -->

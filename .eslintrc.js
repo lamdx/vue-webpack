@@ -28,6 +28,7 @@ module.exports = {
     // no space before function name
     "space-before-function-paren": 0,
     "no-var": 2,
+    'no-unused-vars': 'off',
     "no-eq-null": 2, // 不允许对 null用 == 或者 !=
     "no-eval": 2, // 不允许使用eval()
     "no-empty": 2, // 块语句中的内容不能为空
@@ -41,8 +42,16 @@ module.exports = {
     ],
     // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格，可选参数 never, always
     "computed-property-spacing": 0,
-    // 使用 iView 时报 "Parsing error: x-invalid-end-tag" 错误的解决方案 
+    // 使用 iView 时报 "Parsing error: x-invalid-end-tag" 错误的解决方案
     // 问题原因 iView 将标签渲染为原生 html 标签时，由于这些标签是自闭合的，所以有 end 标签会报错。
-    "vue/no-parsing-error": [2, {"x-invalid-end-tag": false }]
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
+    // 要求组件名称始终为多字
+    "vue/multi-word-component-names": "off",
+    // 强制组件定义名称为 pascal 大小写
+    // "vue/component-definition-name-casing": ["error", "PascalCase"],
+    // 强制执行属性 attributes 顺序
+    "vue/attributes-order": "error",
+    // 强制组件中的属性顺序 properties in components
+    "vue/order-in-components": "error"
   }
 };

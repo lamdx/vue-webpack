@@ -13,8 +13,8 @@
     >
       <Icon
         v-show="!(ishover && value)"
-        type="ios-search"
         slot="suffix"
+        type="ios-search"
         @click="selectaccount"
       ></Icon>
       <!-- <Icon

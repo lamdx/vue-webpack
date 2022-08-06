@@ -1,19 +1,19 @@
 <template>
   <div id="__mytabs__">
-    <div class="arrow left" @click="hander('left')" v-if="showArrow">
+    <div v-if="showArrow" class="arrow left" @click="hander('left')">
       <i class="left"></i>
     </div>
-    <div class="arrow right" @click="hander('right')" v-if="showArrow">
+    <div v-if="showArrow" class="arrow right" @click="hander('right')">
       <i class="right"></i>
     </div>
-    <div class="wrap" ref="wrap">
+    <div ref="wrap" class="wrap">
       <div
-        class="tabs"
         ref="tabs"
         :style="{
           transition: 'transform 0.5s',
           transform: 'translateX(-' + translate + 'px)'
         }"
+        class="tabs"
       >
         <!-- 标签页标题 -->
         <div

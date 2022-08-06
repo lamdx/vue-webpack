@@ -1,5 +1,5 @@
 <template>
-  <div class="pane" v-show="show">
+  <div v-show="show" class="pane">
     <slot></slot>
   </div>
 </template>
@@ -17,11 +17,6 @@ export default {
       show: true
     };
   },
-  methods: {
-    updateNav() {
-      this.$parent.updateNav();
-    }
-  },
   watch: {
     label() {
       this.updateNav();
@@ -35,6 +30,11 @@ export default {
   },
   destroyed () {
     this.updateNav();
+  },
+  methods: {
+    updateNav() {
+      this.$parent.updateNav();
+    }
   }
 };
 </script>

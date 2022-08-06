@@ -1,8 +1,8 @@
 <template>
   <div :class="isTotal ? 'total' : 'part'">
-    <div class="content" :title="content" ref="content">
+    <div ref="content" :title="content" class="content">
       <div>{{ content }}</div>
-      <div class="button" @click="toggle" v-if="isShowButton">
+      <div v-if="isShowButton" class="button" @click="toggle">
         <span v-if="isTotal">收起</span>
         <span v-else>展开</span>
       </div>
@@ -22,11 +22,6 @@ export default {
       isTotal: true, // 这个初始值必须为 true，才能获取 getComputedStyle
       isShowButton: false
     };
-  },
-  methods: {
-    toggle() {
-      this.isTotal = !this.isTotal;
-    }
   },
   watch: {
     content: {
@@ -53,7 +48,12 @@ export default {
       immediate: true
     }
   },
-  mounted() {}
+  mounted() {},
+  methods: {
+    toggle() {
+      this.isTotal = !this.isTotal;
+    }
+  }
 };
 </script>
 

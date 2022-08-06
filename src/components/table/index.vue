@@ -23,8 +23,8 @@
     >
       <template
         v-for="item in tableColumns"
-        :slot="item.slot"
         slot-scope="{ row, column }"
+        :slot="item.slot"
       >
         <slot :name="item.slot" :data="row"></slot>
       </template>
@@ -49,7 +49,7 @@
 </template>
 <script>
 import { deepCopy } from '@/utils/index';
-import storage from '@/utils/storage.js';
+import { getItem, setItem } from '@/utils/storage.js';
 export default {
   props: {
     value: [String, Number, Array],
@@ -152,7 +152,7 @@ export default {
     },
     getDictsByKey(key) {
       return new Promise(resolve => {
-        let list = storage.getItem(key, 'session');
+        let list = getItem(key, 'session');
         if (list.length > 0) {
           resolve(list);
           return;
@@ -163,7 +163,7 @@ export default {
           params: { dictCode: key },
           method: 'get'
         }).then(res => {
-          storage.setItem(key, res.data, 'session');
+          setItem(key, res.data, 'session');
           resolve(res.data);
         });
       });

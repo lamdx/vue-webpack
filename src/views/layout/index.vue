@@ -11,7 +11,7 @@
       </p>
     </div>
     <ul class="sections">
-      <li class="section" v-for="(item, i) in list" :key="i">
+      <li v-for="(item, i) in list" :key="i" class="section">
         <p class="each-item title">
           <span class="title-left">产品{{ i + 1 }}</span>
           <span class="title-right">{{ item.id }}</span>
@@ -88,6 +88,9 @@ export default {
       }
     };
   },
+  created() {
+    this.compareObj();
+  },
   methods: {
     compareObj() {
       let keys = Object.keys(this.resData.after);
@@ -100,9 +103,6 @@ export default {
         }
       });
     }
-  },
-  created() {
-    this.compareObj();
   }
 };
 </script>

@@ -30,15 +30,15 @@
 <script>
 export default {
   name: 'CourseList',
+  props: {
+    // 新增课程时也要访问 courses，因此作为属性传递
+    courses: { type: Array, default: () => [] }
+  },
   data() {
     return {
       // 改状态属于 course-list内部状态，因此作为数据
       selectedCourse: ''
     };
-  },
-  props: {
-    // 新增课程时也要访问 courses，因此作为属性传递
-    courses: { type: Array, default: () => [] }
   }
 };
 </script>
