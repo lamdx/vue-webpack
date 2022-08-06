@@ -1,8 +1,15 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import home from '@/views/home/home';
+import home from '@/views/home';
 
 Vue.use(Router);
+
+const files = require.context('./modules/', true, /\.js$/);
+let modules = [];
+files.keys().forEach(key => {
+  if (key === './index.js') return;
+  modules = modules.concat(files(key).default);
+});
 
 export default new Router({
   routes: [
@@ -14,7 +21,7 @@ export default new Router({
     {
       path: '/demo',
       name: 'demo',
-      component: () => import(/* webpackChunkName: "account" */ '@/views/demo'),
+      component: () => import(/* webpackChunkName: "demo" */ '@/views/demo'),
 
       // 路由组件可以通过 props 接收路由跳转传递的参数(params 和 query 是可以同时存在的)
       // 如果路由传参携带了 params 参数，跳转的时候只能使用 name 跳转，不能使用 path
@@ -26,16 +33,7 @@ export default new Router({
       // 函数，可以将路由 params 参数、query 参数，通过 props 传递给路由组件
       props: $route => ({ keyword: $route.params.keyword, k: $route.query.k })
     },
-    {
-      path: '/comp',
-      name: 'comp',
-      component: () => import(/* webpackChunkName: "comp" */ '@/views/comp')
-    },
-    {
-      path: '/layout',
-      name: 'layout',
-      component: () => import(/* webpackChunkName: "layout" */ '@/views/layout')
-    }
+    ...modules
   ],
   linkActiveClass: 'is_active' // 覆盖默认的路由高亮的类，默认的类叫做 router-link-active
 });
