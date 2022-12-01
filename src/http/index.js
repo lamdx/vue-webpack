@@ -41,26 +41,27 @@ instance.interceptors.request.use(config => {
 // 响应 拦截
 instance.interceptors.response.use(
   response => {
+    // Status Code 状态码 200
     // response = { config: {}, data: {}, headers: {}, request: {}, status: 200, statusText: 'ok' };
     if (response.config && response.config.loading) {
       // Spin.hide();
     }
-    const res = response.data;
+    const res = response.data; // 响应体 body
     if (!res) {
-      alert('响应报文未返回数据');
+      alert("响应报文未返回数据");
       return Promise.reject(response);
     }
     // 只有当交易正常才进入业务逻辑代码中
-    if (res.errorCode && res.errorCode + '' === '0000') {
+    if (res.errorCode && res.errorCode + "" === "0000") {
       return res;
     } else if (res instanceof ArrayBuffer || res instanceof Blob) {
       // 如果是文件类型
       return res;
-    } else if (res.errorCode && res.errorCode + '' === '401') {
-      if (confirm('抱歉，你的操作超时，请重新登录')) {
+    } else if (res.errorCode && res.errorCode + "" === "401") {
+      if (confirm("抱歉，你的操作超时，请重新登录")) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = 'redirectUrl';
+        window.location.href = "redirectUrl";
       }
       return Promise.reject(res);
     } else {
@@ -72,20 +73,21 @@ instance.interceptors.response.use(
     }
   },
   error => {
+    // Status Code 状态码 非 200
     // Spin.hide();
     let err = error.response;
     // err = { data, status, statusText, headers, config, baseURL }
     if (err) {
       let statusMap = {
-        400: '400 Bad Request',
-        401: 'login Timeout',
-        404: '404 Not Found',
-        405: '405 Method Not Allowed',
-        500: '500 网络请求无响应！',
-        502: '502 Bad Gateway',
-        504: '504 Gateway Timeout'
+        400: "400 Bad Request",
+        401: "login Timeout",
+        404: "404 Not Found",
+        405: "405 Method Not Allowed",
+        500: "500 网络请求无响应！",
+        502: "502 Bad Gateway",
+        504: "504 Gateway Timeout",
       };
-      let msg = err.data || statusMap[err.status] || '网络请求异常！';
+      let msg = err.data || statusMap[err.status] || "网络请求异常！";
       if (!err.config.NO_GLOBAL_MSG) {
         alert(msg);
       }
